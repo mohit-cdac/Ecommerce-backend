@@ -30,7 +30,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already Exist");
   }
 
-  const user = await User.create({_id: new mongoose.mongo.ObjectId('123456789012') , name, email, password });
+  const user = await User.create({ name, email, password });
 
   if (user) {
     res.status(201).json({
