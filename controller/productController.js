@@ -77,8 +77,12 @@ export const updateProduct = asyncHandler(async (req, res) => {
     image,
     brand,
     category,
-    countInStock,
+    countInStocks,
   } = req.body;
+
+
+
+  console.log("Stock = Count",countInStocks)
 
   const product = await Product.findById(req.params.id);
 
@@ -89,7 +93,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     product.image = image ? image : product.image;
     product.brand = brand;
     product.category = category;
-    product.countInStock = countInStock;
+    product.countInStocks = countInStocks;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
@@ -126,8 +130,8 @@ export const createProductReview = asyncHandler(async (req, res) => {
     product.numReviews = product.reviews.length
 
     product.rating =
-      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      product.reviews.length
+      (product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length).toFixed(2)
 
     await product.save()
     res.status(201).json({ message: 'Review added' })

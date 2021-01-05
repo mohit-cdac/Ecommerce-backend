@@ -9,11 +9,16 @@ import {
   getUserProfile,
   updateUser,
   updateUserProfile,
+  loginWithGoogle,
+  getGoogleUsers,
 } from "../controller/userController.js";
+
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.get("/", protect, admin, getUsers, updateUser, updateUserProfile);
+router.get("/", protect, admin, getUsers);
+router.get("/googleUsers", protect, admin, getGoogleUsers);
 router.post("/login", authUser);
+router.post("/loginWithGoogle", loginWithGoogle);
 router.post("/register", registerUser);
 router.get("/profile", protect, getUserProfile);
 router.get("/:id", protect, admin, getUserById);
