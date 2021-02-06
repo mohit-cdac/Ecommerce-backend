@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import GoogleUser from "../models/GoogleUserModel.js";
+import Store from "../models/storeModel.js";
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import mongoose from "mongoose";
@@ -8,6 +9,8 @@ export const authUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
+    const store = await Store.find({ user: user._id });
+
     res.status(200).json({
       _id: user._id,
       name: user.name,
@@ -15,6 +18,7 @@ export const authUser = asyncHandler(async (req, res, next) => {
       isAdmin: user.isAdmin,
       googleUser: user.googleUser,
       token: generateToken(user._id),
+      store: store,
     });
   } else {
     res.status(401);
@@ -65,7 +69,7 @@ export const getUserById = asyncHandler(async (req, res, next) => {
   if (!user) {
     user = await GoogleUser.findById(id);
   }
-  console.log(user);
+  // console.log(user);
   if (user) {
     res.json(user);
   } else {
@@ -174,10 +178,6 @@ export const updateUser = asyncHandler(async (req, res, next) => {
   if (!user) {
     user = await GoogleUser.findById(req.params.id);
   }
-
-  console.log("------------------");
-  console.log(user);
-  console.log("------------------");
 
   if (user.googleUser) {
     if (user) {

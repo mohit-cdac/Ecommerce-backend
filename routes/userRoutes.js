@@ -13,6 +13,8 @@ import {
   getGoogleUsers,
 } from "../controller/userController.js";
 
+import { getStoresByUser } from '../controller/storeController.js'
+
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.get("/", protect, admin, getUsers);
@@ -26,5 +28,7 @@ router.delete("/:id", protect, admin, deleteUserById);
 
 router.put("/:id", protect, admin, updateUser);
 router.put("/:id/update", protect, updateUserProfile);
+
+router.get("/:id/store", protect, getStoresByUser);
 
 export default router;

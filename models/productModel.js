@@ -23,6 +23,11 @@ const productSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+    storeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: "Store",
+    },
     name: {
       type: String,
       required: true,
@@ -42,6 +47,12 @@ const productSchema = mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    biddingProduct: {
+      type: Boolean,
+      required: true,
+      default: false,
+      
     },
     reviews: [reviewSchema],
     rating: {
